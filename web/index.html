@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html leng="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, iniitial-scale=1.0">
+        <title>Image Analysis with Google Cloud Vision</title>
+        <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Image Analysis Tool</h1>
+    </header>
+    <main>
+        <section class="upload-section">
+            <h2>Upload your image</h2>
+            <form id="imageForm" enctype="multipart/form-data">
+                <input type="file" id="imageUpload" accept="image/*" required>
+                <button type="submit">Analyze Image0</button>
+            </form>
+        </section>
+        <section class="results-section">
+            <h2>Results</h2>
+            <div id="results"></div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
