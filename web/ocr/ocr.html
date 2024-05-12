@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>OCR Service</h1>
+        <nav><a href="index.html">Home</a></nav>
+    </header>
+    <main>
+        <section class="upload-section">
+            <h2>Upload your image for OCR</h2>
+            <form id="ocrForm" enctype="multipart/form-data">
+                <input type="file" id="iamgeUpload" accept="image/*" required>
+            </form>
+        </section>
+        <section class="results-section">
+            <h2>Results</h2>
+            <div id="ocrResults"></div>
+        </section>
+    </main>
+    <script src="ocr.js"></script>
+</body>
+</html>
