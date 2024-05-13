@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,13 +15,14 @@
         <section class="upload-section">
             <h2>Upload your image for analysis</h2>
             <form id="analysisForm" enctype="multipart/form-data">
-                <input type="file" id="imageUpload" accept="image/*" required>
-                <button type="submit">Analyze Image</button>
+                <label for="imageUpload">Choose an image file:</label>
+                <input type="file" id="imageUpload" name="image" accept="image/*" required>
+                <button type="submit" class="submit-button">Analyze Image</button>
             </form>
         </section>
         <section class="results-section">
             <h2>Results</h2>
-            <div id="analysisResults"></div>
+            <div id="analysisResults" aria-live="polite"></div>
         </section>
     </main>
     <script src="analysis.js"></script>

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,13 +15,14 @@
         <section class="upload-section">
             <h2>Upload your image for facial recognition</h2>
             <form id="facialForm" enctype="multipart/form-data">
-                <input type="file" id="imageUpload" accept="image/*" required>
-                <button type="submit">Detect Faces</button>
+                <label for="imageUpload" class="file-label">Choose an image file:</label>
+                <input type="file" id="imageUpload" name="image" accept="image/*" required>
+                <button type="submit" class="submit-button">Detect Faces</button>
             </form>
         </section>
         <section class="results-section">
             <h2>Results</h2>
-            <div id="facialResults"></div>
+            <div id="facialResults" aria-live="polite"></div>
         </section>
     </main>
     <script src="facial.js"></script>
