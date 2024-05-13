@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,13 +15,14 @@
         <section class="upload-section">
             <h2>Upload your image for OCR</h2>
             <form id="ocrForm" enctype="multipart/form-data">
-                <input type="file" id="imageUpload" accept="image/*" required>
-                <button type="submit">Perform OCR</button>
+                <label for="imageUpload">Choose an image:</label>
+                <input type="file" id="imageUpload" name="image" accept="image/*" required>
+                <button type="submit" class="submit-button">Perform OCR</button>
             </form>
         </section>
         <section class="results-section">
             <h2>Results</h2>
-            <div id="ocrResults"></div>
+            <div id="ocrResults" aria-live="polite"></div>
         </section>
     </main>
     <script src="ocr.js"></script>
