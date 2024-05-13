@@ -1,7 +1,7 @@
 document.getElementById('imageForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData();
-    const imageFile = document.getElementById('iamgeUpload').files[0];
+    const imageFile = document.getElementById('imageUpload').files[0];
     formData.append('image', imageFile)
 
     fetcj('/analyze', {
