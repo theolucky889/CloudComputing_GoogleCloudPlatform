@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Image Analysis Service</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('ocr') }}">OCR</a></li>
+                <li><a href="{{ url_for('facial_recognition') }}">Facial Recognition</a></li>
+                <li><a href="{{ url_for('image_analysis') }}">Image Analysis</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Select a service to get started</h2>
+        </section>
+    </main>
+</body>
+</html>
