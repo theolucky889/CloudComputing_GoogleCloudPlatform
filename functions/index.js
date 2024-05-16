@@ -1,52 +1,34 @@
-const functions = require("firebase-functions");
-const vision = require("@google-cloud/vision");
-const cors = require("cors")({origin: true});
-const admin = require("firebase-admin");
-const multer = require("multer");
-const os = require("os");
-const path = require("path");
-const fs = require("fs");
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const vision = require('@google-cloud/vision');
+const cors = require('cors')({origin: true});
 
 admin.initializeApp();
 
 const client = new vision.ImageAnnotatorClient();
-const upload = multer({storage: multer.memoryStorage()});
 
-exports.ocrImage = functions.https.onRequest((req, res) => {
-  cors(req, res, async () => {
-    if (req.method !== "POST") {
-      return res.status(405).send("Method Not Allowed");
-    }
+exports.detectLabels = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+        if (req.method !== 'POST') {
+            return res.status(405).send('Method Not Allowed');
+        }
 
-    upload.single("image")(req, res, async (err) => {
-      if (err) {
-        return res.status(500).json({error: "Failed to upload file"});
-      }
+        try {
+            const file = req.body.image;
+            if (!file) {
+                return res.status(400).send('No image file in the request');
+            }
 
-      // Validate the file type
-      const validTypes = ["image/jpeg", "image/png"];
-      if (!validTypes.includes(req.file.mimetype)) {
-        return res.status(400).json({ error: "Invalid file type. Only JPG, JPEG, and PNG are allowed." });
-      }
+            const image = {content: Buffer.from(file, 'base64')};
 
-      try {
-        const tempFilePath = path.join(os.tmpdir(), req.file.originalname);
-        fs.writeFileSync(tempFilePath, req.file.buffer);
+            const [result] = await client.labelDetection(image);
+            const labels = result.labelAnnotations;
+            const labelsList = labels.map(label => label.description);
 
-        const [result] = await client.textDetection(tempFilePath);
-        const detections = result.textAnnotations;
-        const text = detections[0] 
-          ? detections[0].description 
-          : "No text detected";
-
-        // Clean up temporary file
-        fs.unlinkSync(tempFilePath);
-
-        res.status(200).json({text});
-      } catch (error) {
-        console.error("Error during OCR:", error);
-        res.status(500).json({error: error.message});
-      }
+            res.status(200).send(labelsList);
+        } catch (error) {
+            console.error('Error during label detection:', error);
+            res.status(500).send(error.message);
+        }
     });
-  });
 });
