@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Analysis Service</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+</head>
+<body>
+    <header>
+        <h1>Image Analysis Service</h1>
+        <nav>
+            <ul>
+            <li><a href="{{url_for('home')}}">Home</a></li>
+            <li><a href="{{url_for('ocr')}}">OCR</a></li>
+            <li><a href="{{url_for('facial_recognition')}}">Facial Recognition</a></li>
+            <li><a href="{{url_for('image_analysis')}}">Image Analysis</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="upload-section">
+            <h2>Upload your image for analysis</h2>
+            <form id="analysisForm" enctype="multipart/form-data">
+                <label for="imageUpload">Choose an image file:</label>
+                <input type="file" id="imageUpload" name="image" accept="image/*" required>
+                <button type="submit" class="submit-button">Analyze Image</button>
+            </form>
+        </section>
+        <section class="results-section">
+            <h2>Results</h2>
+            <div id="analysisResults" aria-live="polite"></div>
+        </section>
+    </main>
+    <script src="{{url_for('static', filename='js/analysis.js')}}"></script>
+</body>
+</html>
