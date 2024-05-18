@@ -36,11 +36,18 @@ document.getElementById('analysisForm').addEventListener('submit', function(e) {
         return response.json();
     })
     .then(data => {
-        // Handle the response data by displaying the labels
         if (data.error) {
             resultsDiv.innerHTML = `<p>Error: ${data.error}</p>`;
         } else if (data.length > 0) {
-            let labelsList = data.map(label => `<li>${label}</li>`).join('');
+            // Prepare data for the chart
+            const labels = data.map(label => label.description);
+            const scores = data.map(label => (label.score * 100).toFixed(2)); // Convert to percentage
+
+            // Create the chart
+            createChart(labels, scores);
+
+            // Display the raw data (optional)
+            let labelsList = data.map(label => `<li>${label.description}: ${(label.score * 100).toFixed(2)}%</li>`).join('');
             resultsDiv.innerHTML = `<h3>Labels Detected:</h3><ul>${labelsList}</ul>`;
         } else {
             resultsDiv.innerHTML = `<p>No labels detected or data is missing.</p>`;
@@ -50,4 +57,60 @@ document.getElementById('analysisForm').addEventListener('submit', function(e) {
         console.error('Error:', err);
         resultsDiv.innerHTML = `<p>Error analyzing image: ${err.message}</p>`;
     });
+});
+
+function createChart(labels, scores) {
+    const ctx = document.getElementById('resultsChart').getContext('2d');
+    const chartType = document.getElementById('chartType').value;
+
+    // Destroy the previous chart if it exists
+    if (window.resultsChart) {
+        window.resultsChart.destroy();
+    }
+
+    window.resultsChart = new Chart(ctx, {
+        type: chartType,
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Label Scores',
+                data: scores,
+                backgroundColor: chartType === 'pie' ? getPieColors(scores.length) : 'rgba(54, 162, 235, 0.2)',
+                borderColor: chartType === 'pie' ? getPieColors(scores.length) : 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: chartType === 'bar' ? {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Percentage'
+                    }
+                }
+            } : {}
+        }
+    });
+}
+
+function getPieColors(numColors) {
+    const colors = [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ];
+    return Array.from({ length: numColors }, (_, i) => colors[i % colors.length]);
+}
+
+// Update the chart when the chart type selection changes
+document.getElementById('chartType').addEventListener('change', function() {
+    const labels = window.resultsChart.data.labels;
+    const scores = window.resultsChart.data.datasets[0].data;
+    createChart(labels, scores);
 });
