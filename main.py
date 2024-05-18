@@ -8,7 +8,7 @@ from threading import Timer
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 # Set the environment variable for Google Cloud credentials
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'vivid-router-423116-h0-cb81109d8309.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'vivid-router-423116-h0-410fd67b4dd5.json'
 
 # Allowed file types
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -162,4 +162,4 @@ def open_browser():
 
 if __name__ == '__main__':
     Timer(1, open_browser).start()  # Open the web browser after 1 second
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
