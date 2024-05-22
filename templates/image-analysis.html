@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Analysis Service</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/image-analysis.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 </head>
 <body>
-    <header>
+    <header data-aos="fade-down">
         <h1>Image Analysis Service</h1>
         <nav>
             <ul>
@@ -20,7 +24,7 @@
         </nav>
     </header>
     <main>
-        <section class="upload-section">
+        <section class="upload-section" data-aos="fade-up">
             <h2>Upload your image for analysis</h2>
             <form id="analysisForm" enctype="multipart/form-data">
                 <label for="imageUpload">Choose an image file:</label>
@@ -28,7 +32,7 @@
                 <button type="submit" class="submit-button">Analyze Image</button>
             </form>
         </section>
-        <section class="results-section">
+        <section class="results-section" data-aos="fade-up">
             <h2>Results</h2>
             <div id="imagePreview"></div>
             <div id="chartContainer">
@@ -43,5 +47,8 @@
         </section>
     </main>
     <script src="{{ url_for('static', filename='js/analysis.js') }}"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 </html>
