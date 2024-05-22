@@ -34,15 +34,12 @@
         </section>
         <section class="results-section" data-aos="fade-up">
             <h2>Results</h2>
+            <label for="chartType">Select Chart Type:</label>
+            <select id="chartType">
+                <option value="Bar Graph">Bar Graph</option>
+                <option value="Pie Chart">Pie Chart</option>
+            </select>
             <div id="imagePreview"></div>
-            <div id="chartContainer">
-                <label for="chartType">Select Chart Type:</label>
-                <select id="chartType">
-                    <option value="pie">Pie Chart</option>
-                    <option value="bar">Bar Graph</option>
-                </select>
-                <canvas id="resultsChart"></canvas>
-            </div>
             <div id="analysisResults" aria-live="polite"></div>
         </section>
     </main>
