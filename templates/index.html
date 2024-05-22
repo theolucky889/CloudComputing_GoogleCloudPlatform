@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 </head>
 <body>
-    <header>
+    <header data-aos="fade-down">
         <h1>Welcome to the Image Analysis Service</h1>
         <nav>
             <ul>
@@ -18,10 +22,30 @@
             </ul>
         </nav>
     </header>
-    <main>
+    <main data-aos="fade-up">
         <section>
             <h2>Select a service to get started</h2>
         </section>
+        <section class="cards">
+            <div class="card" data-aos="flip-left">
+                <h3>OCR</h3>
+                <p>Convert images of text into machine-encoded text.</p>
+                <a href="{{ url_for('ocr') }}" class="button">Go to OCR</a>
+            </div>
+            <div class="card" data-aos="flip-left">
+                <h3>Facial Recognition</h3>
+                <p>Detect and analyze faces in your images.</p>
+                <a href="{{ url_for('facial_recognition') }}" class="button">Go to Facial Recognition</a>
+            </div>
+            <div class="card" data-aos="flip-left">
+                <h3>Image Analysis</h3>
+                <p>Analyze the content of your images and get detailed information.</p>
+                <a href="{{ url_for('image_analysis') }}" class="button">Go to Image Analysis</a>
+            </div>
+        </section>
     </main>
+    <script>
+        AOS.init();
+    </script>
 </body>
 </html>
