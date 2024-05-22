@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, jsonify, url_for
 from google.cloud import vision
 from werkzeug.utils import secure_filename
 import webbrowser
+import logging
+import threading
 
 app = Flask(__name__)
 
@@ -72,6 +74,10 @@ def detect_labels():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
+def open_browser():
     webbrowser.open('http://localhost:5000/')
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    threading.Timer(1.25, open_browser).start()
     app.run(debug=True)
