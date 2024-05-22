@@ -43,15 +43,17 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #fff;
+    color: #4A90E2;
+    font-weight: bold;
     padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
     transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav ul li a:hover {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 1);
     transform: scale(1.05);
 }
 
@@ -84,6 +86,9 @@ main h2 {
     padding: 20px;
     width: 200px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card h3 {
@@ -106,6 +111,8 @@ main h2 {
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    display: block;
+    margin-top: auto;
 }
 
 .card .button:hover {
