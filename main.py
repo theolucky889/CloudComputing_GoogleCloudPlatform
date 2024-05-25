@@ -1,9 +1,9 @@
 import os
-from flask import Flask, render_template, request, jsonify, url_for
+import logging
+from flask import Flask, request, jsonify, render_template
 from google.cloud import vision
 from werkzeug.utils import secure_filename
 import webbrowser
-import logging
 import threading
 
 app = Flask(__name__)
@@ -15,8 +15,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'vivid-router-423116-h0-410fd67b4
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def home():
@@ -63,6 +62,7 @@ def detect_labels():
 
             # Extract descriptions and return them
             labels_list = [{"description": label.description, "score": label.score} for label in labels]
+            app.logger.debug('Labels: %s', labels_list)
 
             # Clean up the temporary file
             os.remove(filename)
@@ -72,6 +72,7 @@ def detect_labels():
             return jsonify({"error": "Invalid file type. Only JPG, JPEG, and PNG are allowed."}), 400
 
     except Exception as e:
+        app.logger.error('Error occurred during label detection: %s', e)
         return jsonify({"error": str(e)}), 500
 
 def open_browser():
