@@ -81,8 +81,10 @@ def detect_labels():
 def open_browser():
     webbrowser.open_new('http://localhost:5000/')
 
+def start_server():
+    threading.Timer(1.25, open_browser).start()
+    app.run(debug=True, use_reloader=False)
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    # Start the Flask app in a separate thread
-    threading.Timer(1.25, open_browser).start()
-    app.run(debug=True)
+    start_server()
