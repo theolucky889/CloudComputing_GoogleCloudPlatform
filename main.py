@@ -62,7 +62,10 @@ def detect_labels():
 
             # Extract descriptions and return them
             labels_list = [{"description": label.description, "score": label.score} for label in labels]
-            app.logger.debug('Labels: %s', labels_list)
+
+            # Sort labels by score in descending order and take the top 5
+            labels_list = sorted(labels_list, key=lambda x: x['score'], reverse=True)[:5]
+            app.logger.debug('Top 5 Labels: %s', labels_list)
 
             # Clean up the temporary file
             os.remove(filename)

@@ -56,7 +56,7 @@ function displayResults(labels) {
     const chartType = chartTypeSelect.value;
 
     const labelNames = labels.map(label => label.description);
-    const labelScores = labels.map(label => label.score * 100); // Convert scores to percentages
+    const labelScores = labels.map(label => (label.score * 100).toFixed(2)); // Convert scores to percentages and fix to 2 decimal places
 
     const canvas = document.createElement('canvas');
     resultsDiv.innerHTML = '';
