@@ -76,9 +76,10 @@ def detect_labels():
         return jsonify({"error": str(e)}), 500
 
 def open_browser():
-    webbrowser.open('http://localhost:5000/')
+    webbrowser.open_new('http://localhost:5000/')
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
+    # Start the Flask app in a separate thread
     threading.Timer(1.25, open_browser).start()
     app.run(debug=True)
