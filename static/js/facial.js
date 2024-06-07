@@ -1,7 +1,7 @@
 document.getElementById('facialForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Check if an image file has been selected
+    // Ensure an image file is selected
     const imageUploadInput = document.getElementById('imageUpload');
     if (imageUploadInput.files.length === 0) {
         alert("Please select an image file to upload.");
@@ -12,34 +12,35 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
     const formData = new FormData();
     formData.append('image', imageFile);
 
-    // Show the image preview
-    const imagePreview = document.getElementById('imagePreview');
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" class="preview-image">`;
-    };
-    reader.readAsDataURL(imageFile);
-
-    // Show a loading message to inform the user that processing is underway
+    // Update UI to show loading status
     const resultsDiv = document.getElementById('facialResults');
     resultsDiv.innerHTML = `<p>Loading...</p>`;
 
-    // Send the image to the server for facial recognition processing
+    // Display the original image
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" style="max-width: 100%; height: auto;">`;
+    };
+    reader.readAsDataURL(imageFile);
+
+    // Send the form data with the image file to the server
     fetch('/detect-faces', {
         method: 'POST',
         body: formData
-    }).then(response => {
+    })
+    .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
-        // Display the number of faces detected
-        if (data.faces !== undefined) {
-            resultsDiv.innerHTML = `<h3>Number of faces detected:</h3><p>${data.faces}</p>`;
+        // Display the results from the server
+        if (data.length > 0) {
+            resultsDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
         } else {
-            resultsDiv.innerHTML = `<p>No faces detected or data is incomplete.</p>`;
+            resultsDiv.innerHTML = `<p>No faces detected or data is missing.</p>`;
         }
     })
     .catch(err => {
