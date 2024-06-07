@@ -78,6 +78,98 @@ def detect_labels():
         app.logger.error('Error occurred during label detection: %s', e)
         return jsonify({"error": str(e)}), 500
 
+@app.route('/ocr-text', methods=['POST'])
+def ocr_text():
+    try:
+        if 'image' not in request.files:
+            return jsonify({"error": "No image file in the request"}), 400
+
+        file = request.files['image']
+
+        if file.filename == '':
+            return jsonify({"error": "No selected file"}), 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(filename)
+
+            # Instantiates a client
+            client = vision.ImageAnnotatorClient()
+
+            # Loads the image into memory
+            with open(filename, 'rb') as image_file:
+                content = image_file.read()
+            image = vision.Image(content=content)
+
+            # Performs text detection on the image file
+            response = client.text_detection(image=image)
+            texts = response.text_annotations
+
+            # Extract the full text and return it
+            detected_text = texts[0].description if texts else 'No text detected'
+            app.logger.debug('Detected Text: %s', detected_text)
+
+            # Clean up the temporary file
+            os.remove(filename)
+
+            return jsonify({"text": detected_text})
+        else:
+            return jsonify({"error": "Invalid file type. Only JPG, JPEG, and PNG are allowed."}), 400
+
+    except Exception as e:
+        app.logger.error('Error occurred during OCR: %s', e)
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/detect-faces', methods=['POST'])
+def detect_faces():
+    try:
+        if 'image' not in request.files:
+            return jsonify({"error": "No image file in the request"}), 400
+
+        file = request.files['image']
+
+        if file.filename == '':
+            return jsonify({"error": "No selected file"}), 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(filename)
+
+            # Instantiates a client
+            client = vision.ImageAnnotatorClient()
+
+            # Loads the image into memory
+            with open(filename, 'rb') as image_file:
+                content = image_file.read()
+            image = vision.Image(content=content)
+
+            # Performs face detection on the image file
+            response = client.face_detection(image=image)
+            faces = response.face_annotations
+
+            # Extract face data and return it
+            faces_list = []
+            for face in faces:
+                faces_list.append({
+                    "detection_confidence": face.detection_confidence,
+                    "joy_likelihood": face.joy_likelihood,
+                    "sorrow_likelihood": face.sorrow_likelihood,
+                    "anger_likelihood": face.anger_likelihood,
+                    "surprise_likelihood": face.surprise_likelihood
+                })
+            app.logger.debug('Detected Faces: %s', faces_list)
+
+            # Clean up the temporary file
+            os.remove(filename)
+
+            return jsonify(faces_list)
+        else:
+            return jsonify({"error": "Invalid file type. Only JPG, JPEG, and PNG are allowed."}), 400
+
+    except Exception as e:
+        app.logger.error('Error occurred during face detection: %s', e)
+        return jsonify({"error": str(e)}), 500
+
 def open_browser():
     webbrowser.open_new('http://localhost:5000/')
 
