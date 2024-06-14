@@ -1,73 +1,65 @@
-/* General Styling */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f9f9f9;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #333;
+    text-align: center;
     margin: 0;
     padding: 0;
-    text-align: center;
 }
 
 header {
-    background: linear-gradient(90deg, rgba(54, 57, 255, 1) 0%, rgba(0, 212, 255, 1) 100%);
     padding: 20px;
+    background-color: #333;
     color: white;
-}
-
-header h1 {
-    margin: 0;
 }
 
 nav a {
-    color: white;
-    text-decoration: none;
+    color: #fff;
     margin: 0 15px;
+    text-decoration: none;
     font-weight: bold;
 }
 
-.upload-section, .results-section, .image-preview-section {
-    background: white;
+nav a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    margin: 0;
+}
+
+.upload-section, .results-section {
     margin: 20px auto;
     padding: 20px;
-    border-radius: 8px;
+    background: #f9f9f9;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-}
-
-.upload-section h2, .results-section h2, .image-preview-section h2 {
-    margin-bottom: 20px;
-}
-
-.file-label, .submit-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px;
-    font-size: 1.1em;
-    border: none;
-    border-radius: 5px;
-}
-
-.file-label {
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
+    max-width: 600px;
 }
 
 .submit-button {
-    background-color: #28a745;
+    background-color: #4CAF50;
     color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .submit-button:hover {
-    background-color: #218838;
+    background-color: #45a049;
 }
 
-#imagePreview img {
-    max-width: 100%;
-    border-radius: 8px;
+.file-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
 }
 
-#ocrResults, #facialResults {
-    white-space: pre-wrap;
-    text-align: left;
+#facialResults canvas {
+    display: block;
+    margin: 20px auto;
+    border: 2px solid #333;
 }

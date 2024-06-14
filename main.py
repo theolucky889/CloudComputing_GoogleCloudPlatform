@@ -132,13 +132,15 @@ def detect_faces():
 
             faces_list = []
             for face in faces:
-                faces_list.append({
+                face_data = {
                     "detection_confidence": face.detection_confidence,
                     "joy_likelihood": face.joy_likelihood,
                     "sorrow_likelihood": face.sorrow_likelihood,
                     "anger_likelihood": face.anger_likelihood,
-                    "surprise_likelihood": face.surprise_likelihood
-                })
+                    "surprise_likelihood": face.surprise_likelihood,
+                    "bounding_poly": [(vertex.x, vertex.y) for vertex in face.bounding_poly.vertices]
+                }
+                faces_list.append(face_data)
             app.logger.debug('Detected Faces: %s', faces_list)
 
             os.remove(filename)
@@ -150,3 +152,7 @@ def detect_faces():
     except Exception as e:
         app.logger.error('Error occurred during face detection: %s', e)
         return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    app.run(debug=True)
