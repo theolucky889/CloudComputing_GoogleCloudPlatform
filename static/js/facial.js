@@ -49,18 +49,18 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
             data.forEach(face => {
                 // Draw bounding box
                 ctx.beginPath();
-                ctx.moveTo(face.bounding_poly[0][0], face.bounding_poly[0][1]);
-                for (let i = 1; i < face.bounding_poly.length; i++) {
-                    ctx.lineTo(face.bounding_poly[i][0], face.bounding_poly[i][1]);
-                }
+                ctx.moveTo(face.bounding_poly[0].x, face.bounding_poly[0].y);
+                face.bounding_poly.forEach(vertex => {
+                    ctx.lineTo(vertex.x, vertex.y);
+                });
                 ctx.closePath();
                 ctx.stroke();
 
                 // Display likelihoods with background
                 ctx.font = '14px Arial';
                 ctx.fillStyle = 'yellow';
-                const x = face.bounding_poly[0][0];
-                const y = face.bounding_poly[0][1];
+                const x = face.bounding_poly[0].x;
+                const y = face.bounding_poly[0].y;
                 const textLines = [
                     `Joy: ${face.joy_likelihood}`,
                     `Sorrow: ${face.sorrow_likelihood}`,
@@ -71,7 +71,7 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
                 ctx.textBaseline = 'top';
                 textLines.forEach((line, index) => {
                     const textX = x + 5; // Slight offset to ensure text is inside the bounding box
-                    const textY = y - (index * 20) - 60; // Adjust text placement relative to the bounding box
+                    let textY = y - (index * 20) - 60; // Adjust text placement relative to the bounding box
                     if (textY < 0) textY = 0; // Prevent text from going above the canvas
                     ctx.fillText(line, textX, textY);
                 });

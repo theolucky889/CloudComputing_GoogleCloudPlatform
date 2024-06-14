@@ -138,7 +138,7 @@ def detect_faces():
                     "sorrow_likelihood": face.sorrow_likelihood,
                     "anger_likelihood": face.anger_likelihood,
                     "surprise_likelihood": face.surprise_likelihood,
-                    "bounding_poly": [(vertex.x, vertex.y) for vertex in face.bounding_poly.vertices]
+                    "bounding_poly": [{"x": vertex.x, "y": vertex.y} for vertex in face.bounding_poly.vertices]
                 }
                 faces_list.append(face_data)
             app.logger.debug('Detected Faces: %s', faces_list)
