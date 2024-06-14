@@ -49,23 +49,20 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
             data.forEach(face => {
                 // Draw bounding box
                 ctx.beginPath();
-                face.bounding_poly.forEach(([x, y], index) => {
-                    if (index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                });
+                ctx.moveTo(face.bounding_poly[0][0], face.bounding_poly[0][1]);
+                for (let i = 1; i < face.bounding_poly.length; i++) {
+                    ctx.lineTo(face.bounding_poly[i][0], face.bounding_poly[i][1]);
+                }
                 ctx.closePath();
                 ctx.stroke();
 
                 // Display likelihoods
                 ctx.font = '14px Arial';
                 ctx.fillStyle = 'yellow';
-                ctx.fillText(`Joy: ${face.joy_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 20);
+                ctx.fillText(`Joy: ${face.joy_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 60);
                 ctx.fillText(`Sorrow: ${face.sorrow_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 40);
-                ctx.fillText(`Anger: ${face.anger_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 60);
-                ctx.fillText(`Surprise: ${face.surprise_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 80);
+                ctx.fillText(`Anger: ${face.anger_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 20);
+                ctx.fillText(`Surprise: ${face.surprise_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 0);
             });
 
             // Append canvas to results div
