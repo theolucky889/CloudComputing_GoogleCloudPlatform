@@ -56,13 +56,25 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
                 ctx.closePath();
                 ctx.stroke();
 
-                // Display likelihoods
+                // Display likelihoods with background
                 ctx.font = '14px Arial';
                 ctx.fillStyle = 'yellow';
-                ctx.fillText(`Joy: ${face.joy_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 60);
-                ctx.fillText(`Sorrow: ${face.sorrow_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 40);
-                ctx.fillText(`Anger: ${face.anger_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 20);
-                ctx.fillText(`Surprise: ${face.surprise_likelihood}`, face.bounding_poly[0][0], face.bounding_poly[0][1] - 0);
+                const x = face.bounding_poly[0][0];
+                const y = face.bounding_poly[0][1];
+                const textLines = [
+                    `Joy: ${face.joy_likelihood}`,
+                    `Sorrow: ${face.sorrow_likelihood}`,
+                    `Anger: ${face.anger_likelihood}`,
+                    `Surprise: ${face.surprise_likelihood}`
+                ];
+                
+                ctx.textBaseline = 'top';
+                textLines.forEach((line, index) => {
+                    const textX = x + 5; // Slight offset to ensure text is inside the bounding box
+                    const textY = y - (index * 20) - 60; // Adjust text placement relative to the bounding box
+                    if (textY < 0) textY = 0; // Prevent text from going above the canvas
+                    ctx.fillText(line, textX, textY);
+                });
             });
 
             // Append canvas to results div
