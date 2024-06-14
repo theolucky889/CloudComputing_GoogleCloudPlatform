@@ -60,41 +60,34 @@ h1 {
 
 .results-container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     margin-top: 20px;
 }
 
 .results-container canvas {
     border: 2px solid #333;
-    max-width: 45%;
+    max-width: 100%;
+    margin-bottom: 20px;
 }
 
-.results-table {
-    border-collapse: collapse;
-    width: 50%;
-    margin-left: 20px;
-}
-
-.results-table th, .results-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+.results-list {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: left;
+    max-width: 100%;
 }
 
-.results-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+.face-info {
+    margin-bottom: 20px;
 }
 
-.results-table td {
-    background-color: #fff;
+.face-info h3 {
+    margin-top: 0;
 }
 
-.results-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.results-table tr:hover {
-    background-color: #ddd;
+.face-info p {
+    margin: 5px 0;
 }

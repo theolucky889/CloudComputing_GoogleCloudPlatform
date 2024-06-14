@@ -46,19 +46,6 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
             ctx.strokeStyle = 'red';
             ctx.lineWidth = 2;
 
-            // Create a results table
-            const resultsTable = document.createElement('table');
-            resultsTable.classList.add('results-table');
-            const headerRow = resultsTable.insertRow();
-            headerRow.innerHTML = `
-                <th>Face</th>
-                <th>Joy</th>
-                <th>Sorrow</th>
-                <th>Anger</th>
-                <th>Surprise</th>
-                <th>Confidence</th>
-            `;
-
             data.forEach((face, index) => {
                 // Draw bounding box
                 ctx.beginPath();
@@ -68,25 +55,31 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
                 });
                 ctx.closePath();
                 ctx.stroke();
-
-                // Add a row for each detected face
-                const row = resultsTable.insertRow();
-                row.innerHTML = `
-                    <td>Face ${index + 1}</td>
-                    <td>${face.joy_likelihood}</td>
-                    <td>${face.sorrow_likelihood}</td>
-                    <td>${face.anger_likelihood}</td>
-                    <td>${face.surprise_likelihood}</td>
-                    <td>${(face.detection_confidence * 100).toFixed(2)}%</td>
-                `;
             });
 
-            // Append image and results table to the results div
+            // Create a results list
+            const resultsList = document.createElement('div');
+            resultsList.classList.add('results-list');
+            data.forEach((face, index) => {
+                const faceInfo = document.createElement('div');
+                faceInfo.classList.add('face-info');
+                faceInfo.innerHTML = `
+                    <h3>Face ${index + 1}</h3>
+                    <p><strong>Joy:</strong> ${face.joy_likelihood}</p>
+                    <p><strong>Sorrow:</strong> ${face.sorrow_likelihood}</p>
+                    <p><strong>Anger:</strong> ${face.anger_likelihood}</p>
+                    <p><strong>Surprise:</strong> ${face.surprise_likelihood}</p>
+                    <p><strong>Confidence:</strong> ${(face.detection_confidence * 100).toFixed(2)}%</p>
+                `;
+                resultsList.appendChild(faceInfo);
+            });
+
+            // Append image and results list to the results div
             resultsDiv.innerHTML = '';
             const container = document.createElement('div');
             container.classList.add('results-container');
             container.appendChild(canvas);
-            container.appendChild(resultsTable);
+            container.appendChild(resultsList);
             resultsDiv.appendChild(container);
         };
     })
