@@ -3,8 +3,6 @@ import logging
 from flask import Flask, request, jsonify, render_template
 from google.cloud import vision
 from werkzeug.utils import secure_filename
-import webbrowser
-import threading
 
 app = Flask(__name__)
 
@@ -48,26 +46,19 @@ def detect_labels():
             filename = secure_filename(file.filename)
             file.save(filename)
 
-            # Instantiates a client
             client = vision.ImageAnnotatorClient()
 
-            # Loads the image into memory
             with open(filename, 'rb') as image_file:
                 content = image_file.read()
             image = vision.Image(content=content)
 
-            # Performs label detection on the image file
             response = client.label_detection(image=image)
             labels = response.label_annotations
 
-            # Extract descriptions and return them
             labels_list = [{"description": label.description, "score": label.score} for label in labels]
-
-            # Sort labels by score in descending order and take the top 5
             labels_list = sorted(labels_list, key=lambda x: x['score'], reverse=True)[:5]
             app.logger.debug('Top 5 Labels: %s', labels_list)
 
-            # Clean up the temporary file
             os.remove(filename)
 
             return jsonify(labels_list)
@@ -93,23 +84,18 @@ def ocr_text():
             filename = secure_filename(file.filename)
             file.save(filename)
 
-            # Instantiates a client
             client = vision.ImageAnnotatorClient()
 
-            # Loads the image into memory
             with open(filename, 'rb') as image_file:
                 content = image_file.read()
             image = vision.Image(content=content)
 
-            # Performs text detection on the image file
             response = client.text_detection(image=image)
             texts = response.text_annotations
 
-            # Extract the full text and return it
             detected_text = texts[0].description if texts else 'No text detected'
             app.logger.debug('Detected Text: %s', detected_text)
 
-            # Clean up the temporary file
             os.remove(filename)
 
             return jsonify({"text": detected_text})
@@ -135,19 +121,15 @@ def detect_faces():
             filename = secure_filename(file.filename)
             file.save(filename)
 
-            # Instantiates a client
             client = vision.ImageAnnotatorClient()
 
-            # Loads the image into memory
             with open(filename, 'rb') as image_file:
                 content = image_file.read()
             image = vision.Image(content=content)
 
-            # Performs face detection on the image file
             response = client.face_detection(image=image)
             faces = response.face_annotations
 
-            # Extract face data and return it
             faces_list = []
             for face in faces:
                 faces_list.append({
@@ -159,7 +141,6 @@ def detect_faces():
                 })
             app.logger.debug('Detected Faces: %s', faces_list)
 
-            # Clean up the temporary file
             os.remove(filename)
 
             return jsonify(faces_list)
@@ -169,14 +150,3 @@ def detect_faces():
     except Exception as e:
         app.logger.error('Error occurred during face detection: %s', e)
         return jsonify({"error": str(e)}), 500
-
-def open_browser():
-    webbrowser.open_new('http://localhost:5000/')
-
-def start_server():
-    threading.Timer(1.25, open_browser).start()
-    app.run(debug=True, use_reloader=False)
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    start_server()
