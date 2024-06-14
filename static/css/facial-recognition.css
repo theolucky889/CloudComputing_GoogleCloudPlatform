@@ -34,7 +34,7 @@ h1 {
     background: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
+    max-width: 800px;
 }
 
 .submit-button {
@@ -58,9 +58,43 @@ h1 {
     color: #555;
 }
 
-#facialResults canvas {
-    display: block;
-    margin: 20px auto;
+.results-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.results-container canvas {
     border: 2px solid #333;
-    max-width: 100%;
+    max-width: 45%;
+}
+
+.results-table {
+    border-collapse: collapse;
+    width: 50%;
+    margin-left: 20px;
+}
+
+.results-table th, .results-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.results-table td {
+    background-color: #fff;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.results-table tr:hover {
+    background-color: #ddd;
 }

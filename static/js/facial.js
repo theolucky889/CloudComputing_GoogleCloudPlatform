@@ -46,7 +46,20 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
             ctx.strokeStyle = 'red';
             ctx.lineWidth = 2;
 
-            data.forEach(face => {
+            // Create a results table
+            const resultsTable = document.createElement('table');
+            resultsTable.classList.add('results-table');
+            const headerRow = resultsTable.insertRow();
+            headerRow.innerHTML = `
+                <th>Face</th>
+                <th>Joy</th>
+                <th>Sorrow</th>
+                <th>Anger</th>
+                <th>Surprise</th>
+                <th>Confidence</th>
+            `;
+
+            data.forEach((face, index) => {
                 // Draw bounding box
                 ctx.beginPath();
                 ctx.moveTo(face.bounding_poly[0].x, face.bounding_poly[0].y);
@@ -56,30 +69,25 @@ document.getElementById('facialForm').addEventListener('submit', function(e) {
                 ctx.closePath();
                 ctx.stroke();
 
-                // Display likelihoods with background
-                ctx.font = '14px Arial';
-                ctx.fillStyle = 'yellow';
-                const x = face.bounding_poly[0].x;
-                const y = face.bounding_poly[0].y;
-                const textLines = [
-                    `Joy: ${face.joy_likelihood}`,
-                    `Sorrow: ${face.sorrow_likelihood}`,
-                    `Anger: ${face.anger_likelihood}`,
-                    `Surprise: ${face.surprise_likelihood}`
-                ];
-                
-                ctx.textBaseline = 'top';
-                textLines.forEach((line, index) => {
-                    const textX = x + 5; // Slight offset to ensure text is inside the bounding box
-                    let textY = y - (index * 20) - 60; // Adjust text placement relative to the bounding box
-                    if (textY < 0) textY = 0; // Prevent text from going above the canvas
-                    ctx.fillText(line, textX, textY);
-                });
+                // Add a row for each detected face
+                const row = resultsTable.insertRow();
+                row.innerHTML = `
+                    <td>Face ${index + 1}</td>
+                    <td>${face.joy_likelihood}</td>
+                    <td>${face.sorrow_likelihood}</td>
+                    <td>${face.anger_likelihood}</td>
+                    <td>${face.surprise_likelihood}</td>
+                    <td>${(face.detection_confidence * 100).toFixed(2)}%</td>
+                `;
             });
 
-            // Append canvas to results div
+            // Append image and results table to the results div
             resultsDiv.innerHTML = '';
-            resultsDiv.appendChild(canvas);
+            const container = document.createElement('div');
+            container.classList.add('results-container');
+            container.appendChild(canvas);
+            container.appendChild(resultsTable);
+            resultsDiv.appendChild(container);
         };
     })
     .catch(err => {
